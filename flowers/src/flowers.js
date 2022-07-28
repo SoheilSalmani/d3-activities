@@ -41,8 +41,6 @@ export function drawFlowers(svgWidth, svgHeight) {
     title: d.title,
   }));
 
-  console.log(sizeScale(7.2));
-
   d3.select("#flowers")
     .attr("width", svgWidth)
     .attr("height", svgHeight)
