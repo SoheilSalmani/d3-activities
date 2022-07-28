@@ -4,22 +4,32 @@ import colors from "./colors.json";
 import movies from "./movies.json";
 import paths from "./paths.json";
 
-const barData = [48, 67, 96, 84, 41];
-const rectWidth = 50;
+const barData = [48, 67, 96, 84, 41, 72, 72, 10, 15, 23];
+const svgWidth = 600;
+const svgHeight = 400;
+
+const xScale = d3
+  .scaleBand()
+  .domain(barData.keys())
+  .range([0, svgWidth])
+  .padding(0.25);
+
+const max = d3.max(barData, (d) => d);
+
+const yScale = d3.scaleLinear().domain([0, max]).range([svgHeight, 0]);
 
 d3.select("#barchart")
-  .attr("width", barData.length * rectWidth)
-  .attr("height", 100)
+  .attr("width", svgWidth)
+  .attr("height", svgHeight)
   .selectAll("rect")
   .data(barData)
   .enter()
   .append("rect")
-  .attr("x", (_, i) => i * rectWidth)
-  .attr("y", (d) => 100 - d)
-  .attr("height", (d) => d)
-  .attr("width", rectWidth)
+  .attr("x", (_, i) => xScale(i))
+  .attr("y", (d) => yScale(d))
+  .attr("height", (d) => svgHeight - yScale(d))
+  .attr("width", xScale.bandwidth)
   .attr("stroke-width", 3)
-  .attr("stroke-dasharray", "5 5")
   .attr("stroke", "plum")
   .attr("fill", "pink");
 
